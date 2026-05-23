@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Web</title>
+</head>
+<body style="margin:0; padding:0; display:flex; flex-direction:column; height:100vh;">
+
+    <div style="padding: 5px; display: flex; gap: 5px; align-items: center; background: #f0f0f0; border-bottom: 1px solid #ccc;">
+        <input type="text" id="urlInput" placeholder="URLを入力" style="width: 300px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') load()">
+        
+        <button onclick="load()" style="padding: 4px 12px; font-weight: bold;">開く</button>
+        <button onclick="refresh()" style="padding: 4px 10px;">↻ 更新</button>
+        <button onclick="clearSite()" style="padding: 4px 10px; background: #ff4d4d; color: white; border: 1px solid #cc0000; border-radius: 2px; cursor: pointer;">× 消去</button>
+    </div>
+
+    <iframe id="viewer" style="width:100%; flex-grow:1; border:none;" src="about:blank"></iframe>
+
+    <script>
+        // サイトを開く
+        function load() {
+            var url = document.getElementById('urlInput').value.trim();
+            if (!url) return;
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            document.getElementById('viewer').src = 'https://isiokaq.onrender.com/?url=' + encodeURIComponent(url);
+        }
+
+        // ページを更新する
+        function refresh() {
+            try {
+                document.getElementById('viewer').contentWindow.location.reload();
+            } catch (e) {
+                load();
+            }
+        }
+
+        // 開いているサイトを消去して真っ白にする
+        function clearSite() {
+            document.getElementById('viewer').src = 'about:blank';
+            document.getElementById('urlInput').value = '';
+        }
+    </script>
+
+</body>
+</html>
